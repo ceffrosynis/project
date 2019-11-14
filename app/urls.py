@@ -1,4 +1,4 @@
-"""app URL Configuration
+"""personal_portfolio URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -14,8 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.conf.urls import url
+from django.urls import path, include
+from dashing.utils import router
+from django.views.generic.base import TemplateView
+from blog import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    url(r'^dashboard/', include(router.urls)),
+    path('accounts/', include('django.contrib.auth.urls')),
+    url(r'^signup/$', core_views.signup, name='signup'),
 ]
