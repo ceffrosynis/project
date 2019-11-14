@@ -19,7 +19,7 @@ from django.conf.urls import url
 from django.urls import path, include
 from dashing.utils import router
 from django.views.generic.base import TemplateView
-from blog import views as core_views
+from items import views as core_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
