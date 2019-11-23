@@ -107,9 +107,9 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="nav-link border border-light rounded waves-effect"
+            <a href="http://127.0.0.1:8000/accounts/login/" class="nav-link border border-light rounded waves-effect"
               target="_blank">
-              <i class="fab fa-github mr-2"></i>MDB GitHub
+              <i class="fab fa-github mr-2"></i>Log in
             </a>
           </li>
         </ul>
@@ -320,7 +320,7 @@
 
           <!--Grid column-->
 
-          {% for item in items %}
+          {% for item in object_list %}
 
           <div class="col-lg-3 col-md-6 mb-4">
 
@@ -329,9 +329,9 @@
 
               <!--Card image-->
               <div class="view overlay">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top"
+                <img src="{{item.Image.url}}" class="card-img-top"
                   alt="">
-                <a>
+                <a href="{{ item.get_absolute_url }}">
                   <div class="mask rgba-white-slight"></div>
                 </a>
               </div>
@@ -345,14 +345,20 @@
                 </a>
                 <h5>
                   <strong>
-                    <a href="" class="dark-grey-text">{{item.title}}
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{item.ProductName}}
                       <span class="badge badge-pill danger-color">NEW</span>
                     </a>
                   </strong>
                 </h5>
 
                 <h4 class="font-weight-bold blue-text">
-                  <strong>{{item.price}}$</strong>
+                <strong>
+                {% if item.discount %}
+                        {{item.Discount}}€
+                {% else %}
+                        {{item.Price}}€
+                {% endif %}
+                </strong>
                 </h4>
 
               </div>

@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.shortcuts import reverse
 
-# Create your models here.
 
 CATEGORIES = (
         ('S', 'Shirt'),
@@ -9,25 +9,56 @@ CATEGORIES = (
         ('O', 'Outwear')
 )
 
-class Item(models.Model):
-    title = models.CharField(max_length=100)
-    price = models.FloatField()
+class Product(models.Model):
+    ProductID = models.IntegerField(primary_key=True)    
+    ProductName = models.CharField(max_length=100)
+    Price = models.FloatField()
+    Discount = models.FloatField(blank=True, null=True)
+    Description = models.TextField()
+    Image = models.ImageField(default = 'default.png')
+    Stock = models.IntegerField(default=1)
+    slug = models.SlugField()
 
-    category = models.CharField(choices=CATEGORIES, max_length=2)
+    ProductType = models.CharField(choices=CATEGORIES, max_length=2)
+
+    def get_absolute_url(self):
+        return reverse("items:details", kwargs={
+                'slug': self.slug
+        })
+
+    def get_cart_url(self):
+        return reverse("items:cart", kwargs={
+                'slug': self.slug
+        })
 
     def __str__(self):
-        return self.title
+        return self.ProductName
 
-class OrderItem(models.Model):
-    pass
+class Transaction(models.Model):
+    TransactionID = models.AutoField(primary_key=True)
+    UserID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    ProductID = models.ForeignKey(Product, on_delete=models.CASCADE)
+    Quantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.TransactionID)
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    ordered = models.BooleanField(default=False)
-    items = models.ManyToManyField(OrderItem)
-    start_date = models.DateTimeField(auto_now_add=True)
+    UserID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    ProductID = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True)
+    Quantity = models.IntegerField(default=0)
 
-    ordered_date = models.DateTimeField()
+    def __str__(self):
+        return str(self.ProductID)
+    
+
+class Cart(models.Model):
+    CartID = models.AutoField(primary_key=True)
+    UserID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    TotalQuantity = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.CartID)
 
     
     
