@@ -8,8 +8,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Material Design Bootstrap</title>
+  <title>E-book</title>
   <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Bootstrap core CSS -->
   <link href="{% static 'eshop/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -20,9 +21,10 @@
   <style type="text/css">
     html,
     body,
-    header,
-    .carousel {
-      height: 60vh;
+    header {
+      height: 100%;
+    margin: 0;
+    padding: 0;
     }
 
     @media (max-width: 740px) {
@@ -49,6 +51,10 @@
 
         margin-top: 80px;
 
+    }
+
+    footer {
+        margin-top: 80px !important;
     }
 
   </style>
@@ -149,18 +155,23 @@
                 <td>{{item.get_price}}</td>
                 <td> <a href="{% url 'items:remove_from_cart' item.ProductID %}"><span>&#8722;</span></a> {{item.Quantity}} <a href="{% url 'items:cart' item.ProductID %}"><span>&#43;</span></a> </td>
                 <td>{{item.total_price}}</td>
-                <td>Otto</td>
+                <td><a href="{% url 'items:remove_row' item.ProductID %}"><i class="fa fa-trash"></i></a></td>
         </tr>
         {% endfor %}
         </tbody>
         </table>
+        {% if request.user|products_in_cart != 0 %}
+        <tr>
+            <td colspan="5"><a class="btn btn-success float-right">Checkout</a></td>
+        </tr>
+        {% endif %}
 
     </div>
   </main>
   <!--Main layout-->
 
   <!--Footer-->
-  <footer class="page-footer text-center font-small mt-4 wow fadeIn">
+  <footer class="page-footer text-center font-small wow fadeIn">
 
     <hr class="my-4">
 

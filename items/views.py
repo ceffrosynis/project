@@ -71,4 +71,25 @@ def remove_from_cart(request, slug):
             cart.save()
 
     return redirect("items:cart_summary")
+
+
+@login_required
+def remove_row(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    
+    cartList = Cart.objects.filter(UserID=request.user)
+    orderList = Order.objects.filter(UserID=request.user, ProductID=product.ProductID)
+
+    if cartList.exists():
+        if orderList.exists():
+            order = orderList[0]
+            cart = cartList[0]
+            cart.TotalQuantity -= order.Quantity
+            order.delete()
+            cart.save()
+
+    return redirect("items:cart_summary")
+
+
+
     
