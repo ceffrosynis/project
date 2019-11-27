@@ -17,6 +17,41 @@
   <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
+  <style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    .table {
+
+        margin-top: 80px;
+
+    }
+
+  </style>
 </head>
 
 <body>
@@ -47,11 +82,12 @@
             </a>
           </li>
         </ul>
+
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-        {% if request.user.is_authenticated %}
+          {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+            <a class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -63,9 +99,9 @@
               Log out
             </a>
           </li>
-        {% else %}
+          {% else %}
           <li class="nav-item">
-            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+            <a class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> 0 </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -80,10 +116,10 @@
           <li class="nav-item">
             <a href="{% url 'account_login' %}" class="nav-link border border-light rounded waves-effect"
               target="_blank">
-              Login
+              Log in
             </a>
           </li>
-        {% endif %}
+          {% endif %}
         </ul>
 
       </div>
@@ -93,120 +129,31 @@
   <!-- Navbar -->
 
   <!--Main layout-->
-  <main class="mt-5 pt-4">
-    <div class="container dark-grey-text mt-5">
+  <main>
+    <div class="container">
 
-      <!--Grid row-->
-      <div class="row wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-md-6 mb-4">
-
-          <!--Content-->
-          <div class="p-4">
-
-            <div class="mb-3">
-              <a href="">
-                <span class="badge purple mr-1">Category 2</span>
-              </a>
-              <a href="">
-                <span class="badge blue mr-1">New</span>
-              </a>
-              <a href="">
-                <span class="badge red mr-1">Bestseller</span>
-              </a>
-            </div>
-
-            <p class="lead">
-                {% if object.Discount %}
-                        <span class="mr-1">
-                        <del>{{object.Price}}€</del>
-                        <span>{{object.Discount}}€</span>
-                        </span>
-                {% else %}
-                        <span>{{object.Price}}€</span>
-                {% endif %}
-            </p>
-
-            <p class="lead font-weight-bold">Description</p>
-
-            <p>{{object.Description}}</p>
-
-            <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
-              <a href="{{ object.get_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </a>
-
-            </form>
-
-          </div>
-          <!--Content-->
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <hr>
-
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-4 h4">Additional information</h4>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-            voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <!--Grid row-->
-      <div class="row wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Deletion</th>
+            </tr>
+            </thead>
+        <tbody>
+        {% for item in object %}
+        <tr>
+                <th scope="row">{{item.ProductID}}</th>
+                <td>{{item.get_price}}</td>
+                <td> <a href="{% url 'items:remove_from_cart' item.ProductID %}"><span>&#8722;</span></a> {{item.Quantity}} <a href="{% url 'items:cart' item.ProductID %}"><span>&#43;</span></a> </td>
+                <td>{{item.total_price}}</td>
+                <td>Otto</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        </table>
 
     </div>
   </main>

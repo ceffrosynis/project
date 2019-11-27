@@ -81,7 +81,7 @@
         <ul class="navbar-nav nav-flex-icons">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link waves-effect">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -95,7 +95,7 @@
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link waves-effect">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> 0 </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -213,7 +213,7 @@
 
                 <h4 class="font-weight-bold blue-text">
                 <strong>
-                {% if item.discount %}
+                {% if item.Discount %}
                         {{item.Discount}}€
                 {% else %}
                         {{item.Price}}€
