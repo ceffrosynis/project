@@ -4,12 +4,14 @@ from django.views.generic import ListView, DetailView, View
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Product, Transaction, Cart, Order
+from .models import Product, Transaction, Cart, Order, Profile
+from .forms import UserProfileForm
 
 # Create your views here.
 
 class Home(ListView):
     model = Product
+    paginate_by = 1
     template_name = "home.html"
 
 class Details(DetailView):
@@ -26,6 +28,11 @@ class CartSummary(LoginRequiredMixin, View):
         except ObjectDoesNotExist:
             messages.error(self.request, "You do not have any order")
             return redirect("/")
+
+class Checkout(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        return render(self.request, "checkout.html")
+        
 
 @login_required
 def add_to_cart(request, slug):
@@ -92,4 +99,44 @@ def remove_row(request, slug):
 
 
 
+
+class UserProfile(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        checkProfile = Profile.objects.filter(UserID=request.user)
+        if checkProfile.exists():
+            form = UserProfileForm(initial={
+                'Name': checkProfile[0].Name,
+                'LastName': checkProfile[0].LastName,
+                'CardID': checkProfile[0].CardID,
+                'Address': checkProfile[0].Address,
+                'Country': checkProfile[0].Country,
+                })
+        else:
+            form = UserProfileForm()
+
+        context = {
+            'form': form
+        }
+        return render(self.request, "profile.html", context=context)
     
+    def post(self, request, *args, **kwargs):
+        form = UserProfileForm(self.request.POST or None)
+        print("In post")
+        if form.is_valid():
+            print("The form is valid")
+            checkProfile = Profile.objects.filter(UserID=request.user)
+            if not checkProfile.exists():
+                Name = form.cleaned_data.get('Name')
+                LastName = form.cleaned_data.get('LastName')
+                CardID = form.cleaned_data.get('CardID')
+                Address = form.cleaned_data.get('Address')
+                Country = form.cleaned_data.get('Country')
+                Profile.objects.create(UserID=request.user, Name=Name, LastName=LastName, Address=Address, CardID=CardID, Country=Country)
+            return redirect('items:home')
+
+        form = UserProfileForm()
+        context = {
+            'form': form
+        }
+
+        return render(self.request, "profile.html", context=context)

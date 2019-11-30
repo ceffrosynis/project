@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
-
+from django_countries.fields import CountryField
 
 CATEGORIES = (
         ('S', 'Shirt'),
@@ -73,3 +73,14 @@ class Cart(models.Model):
 
     
     
+class Profile(models.Model):
+    UserID = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    Name = models.CharField(max_length=100)
+    LastName = models.CharField(max_length=100)
+    CardID = models.CharField(max_length=100)
+    Address = models.CharField(max_length=100)
+    Country = CountryField()
+    
+
+    def __str__(self):
+        return str(self.UserID)
