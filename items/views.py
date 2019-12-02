@@ -202,13 +202,14 @@ class UserProfile(LoginRequiredMixin, View):
         form = UserProfileForm(self.request.POST or None)
         if form.is_valid():
             checkProfile = Profile.objects.filter(UserID=request.user)
-            if not checkProfile.exists():
-                Name = form.cleaned_data.get('Name')
-                LastName = form.cleaned_data.get('LastName')
-                CardID = form.cleaned_data.get('CardID')
-                Address = form.cleaned_data.get('Address')
-                Country = form.cleaned_data.get('Country')
-                Profile.objects.create(UserID=request.user, Name=Name, LastName=LastName, Address=Address, CardID=CardID, Country=Country)
+            Name = form.cleaned_data.get('Name')
+            LastName = form.cleaned_data.get('LastName')
+            CardID = form.cleaned_data.get('CardID')
+            Address = form.cleaned_data.get('Address')
+            Country = form.cleaned_data.get('Country')
+            if checkProfile.exists():
+                checkProfile.delete()
+            Profile.objects.create(UserID=request.user, Name=Name, LastName=LastName, Address=Address, CardID=CardID, Country=Country)
             return redirect('items:home')
 
         form = UserProfileForm()
