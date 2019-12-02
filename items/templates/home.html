@@ -44,7 +44,6 @@
         height: 100vh;
       }
     }
-
   </style>
 </head>
 
@@ -76,10 +75,15 @@
             </a>
           </li>
           <li class="nav-item">
-              <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
-                <span class="sr-only">(current)</span>
-              </a>
-            </li>
+            <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'items:add_product' %}">Add Product
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
         </ul>
 
         <!-- Right -->
@@ -176,73 +180,134 @@
 
       </nav>
       <!--/.Navbar-->
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="my-4">
 
-      <!--Section: Products v.3-->
-      <section class="text-center mb-4">
-
-        <!--Grid row-->
-        <div class="row wow fadeIn">
-
-          <!--Grid column-->
-
-          {% for item in object_list %}
-
-          <div class="col-lg-3 col-md-6 mb-4">
-
-            <!--Card-->
-            <div class="card">
-
-              <!--Card image-->
-              <div class="view overlay">
-                <img src="{{item.Image.url}}" class="card-img-top"
-                  alt="">
-                <a href="{{ item.get_absolute_url }}">
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center">
-                <!--Category & Title-->
-                <a href="" class="grey-text">
-                  <h5>Shirt</h5>
-                </a>
-                <h5>
-                  <strong>
-                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{item.ProductName}}
-                      <span class="badge badge-pill danger-color">NEW</span>
-                    </a>
-                  </strong>
-                </h5>
-
-                <h4 class="font-weight-bold blue-text">
-                <strong>
-                {% if item.Discount %}
-                        {{item.Discount}}€
-                {% else %}
-                        {{item.Price}}€
-                {% endif %}
-                </strong>
-                </h4>
-
-              </div>
-              <!--Card content-->
-
+              <p class="font-weight-bold">Filter</p>
+              <form method='post'>
+                  {% csrf_token %}
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Technology }}
+                      <label class="custom-control-label" for="check1">Technology</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Comedy }}
+                      <label class="custom-control-label" for="check2">Comedy</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Adventure }}
+                      <label class="custom-control-label" for="check3">Adventure</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Horror }}
+                      <label class="custom-control-label" for="check4">Horror</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Romance }}
+                      <label class="custom-control-label" for="check5">Romance</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Other }}
+                      <label class="custom-control-label" for="check6">Other</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Mystery }}
+                      <label class="custom-control-label" for="check7">Mystery</label>
+                    </div>
+                  </li>
+                </ul>
+              </form>
             </div>
-            <!--Card-->
 
           </div>
-          {% endfor %}
-          <!--Grid column-->
-        </div>
-        <!--Grid row-->
+          <div class="col-10">
+            <!--Section: Products v.3-->
+            <section class="text-center mb-4">
 
-      </section>
-      <!--Section: Products v.3-->
+              <!--Grid row-->
+              <div class="row wow fadeIn">
+
+                <!--Grid column-->
+
+                {% for item in page_obj %}
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                  <!--Card-->
+                  <div class="card">
+
+                    <!--Card image-->
+                    <div class="view overlay">
+                      <img src="{{item.Image.url}}" class="card-img-top" alt="">
+                      <a href="{{ item.get_absolute_url }}">
+                        <div class="mask rgba-white-slight"></div>
+                      </a>
+                    </div>
+                    <!--Card image-->
+
+                    <!--Card content-->
+                    <div class="card-body text-center">
+                      <!--Category & Title-->
+                      <a href="" class="grey-text">
+                        <h5>{{ item.get_ProductType_display }}</h5>
+                      </a>
+                      <h5>
+                        <strong>
+                          <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{item.ProductName}}
+                            <span class="badge badge-pill danger-color">NEW</span>
+                          </a>
+                        </strong>
+                      </h5>
+
+                      <h4 class="font-weight-bold blue-text">
+                        <strong>
+                          {{item.get_final_price}}€
+                        </strong>
+                      </h4>
+
+                    </div>
+                    <!--Card content-->
+
+                  </div>
+                  <!--Card-->
+
+                </div>
+                {% endfor %}
+                <!--Grid column-->
+              </div>
+              <!--Grid row-->
+
+            </section>
+            <!--Section: Products v.3-->
+          </div>
+        </div>
+      </div>
 
       <!--Pagination-->
-      {% if is_paginated %}
+      {% if page_obj.has_other_pages %}
       <nav class="d-flex justify-content-center wow fadeIn">
         <ul class="pagination pg-blue">
 
@@ -312,4 +377,3 @@
 </body>
 
 </html>
-

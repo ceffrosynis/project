@@ -1,5 +1,6 @@
 {% load static %}
 {% load quantity %}
+{% load crispy_forms_tags %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,9 +9,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>E-book</title>
+  <title>Material Design Bootstrap</title>
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Bootstrap core CSS -->
   <link href="{% static 'eshop/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -18,48 +18,16 @@
   <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
-  <style type="text/css">
-    html,
-    body,
-    header {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
 
-    @media (max-width: 740px) {
-
-      html,
-      body,
-      header,
-      .carousel {
-        height: 100vh;
-      }
-    }
-
-    @media (min-width: 800px) and (max-width: 850px) {
-
-      html,
-      body,
-      header,
-      .carousel {
-        height: 100vh;
-      }
-    }
-
-    .table {
-
-      margin-top: 80px;
-
-    }
-
-    footer {
-      margin-top: 80px !important;
+  <style>
+    input {
+      width: 100%;
     }
   </style>
+
 </head>
 
-<body>
+<body class="grey lighten-3">
 
   <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
@@ -102,7 +70,7 @@
         <ul class="navbar-nav nav-flex-icons">
           {% if request.user.is_authenticated %}
           <li class="nav-item">
-            <a class="nav-link waves-effect">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -116,7 +84,7 @@
           </li>
           {% else %}
           <li class="nav-item">
-            <a class="nav-link waves-effect">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> 0 </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
@@ -144,55 +112,122 @@
   <!-- Navbar -->
 
   <!--Main layout-->
-  <main>
-    <div class="container">
+  <main class="mt-5 pt-4">
+    <div class="container wow fadeIn">
 
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Product</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total Price</th>
-            <th scope="col">Deletion</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in object %}
-          <tr>
-            <th scope="row">{{item.ProductID}}</th>
-            <td>{{item.get_price}}</td>
-            <td> <a href="{% url 'items:remove_from_cart' item.ProductID.slug %}"><span>&#8722;</span></a>
-              {{item.Quantity}} <a href="{% url 'items:cart' item.ProductID.slug %}"><span>&#43;</span></a> </td>
-            <td>{{item.total_price}}</td>
-            <td><a href="{% url 'items:remove_row' item.ProductID.slug %}"><i class="fa fa-trash"></i></a></td>
-          </tr>
+      <!-- Heading -->
+      <h2 class="my-5 h2 text-center">Profile Info</h2>
 
+      <!--Grid row-->
+      <div class="row justify-content-md-center">
 
-          </tr>
+        <!--Grid column-->
+        <div class="col-md-8 mb-4">
 
-          {% endfor %}
-          <tr>
-            <td colspan="4">Total Price</td>
-            <td>{{total}}</td>
-          </tr>
-        </tbody>
-      </table>
+          <!--Card-->
+          <div class="card container">
+            <div class="row">
+              <table class="table table-dark" style="height:100%">
+                {% for prof in profile %}
+                <tbody>
+                  <tr>
+                    <th scope="row">First Name</th>
+                    <td>{{ prof.Name }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Last Name</th>
+                    <td>{{ prof.LastName }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Card ID</th>
+                    <td>{{ prof.CardID }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Address</th>
+                    <td>{{ prof.Address }}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Country</th>
+                    <td>{{ prof.Country }}</td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </table>
+            </div>
+            <div class="row">
 
-      {% if request.user|products_in_cart != 0 %}
-      <tr>
-        <td colspan="5"><a href="{% url 'items:checkout' %}" class="btn btn-success float-right">Checkout</a></td>
-      </tr>
-      {% endif %}
+            </div>
+          </div>
+          <!--/.Card-->
+          <form style="margin-top: 10px;">
+            <div class="form-group"">
+                <label for=" exampleFormControlTextarea1">Comments</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
 
     </div>
   </main>
   <!--Main layout-->
 
   <!--Footer-->
-  <footer class="page-footer text-center font-small wow fadeIn">
+  <footer class="page-footer text-center font-small mt-4 wow fadeIn">
+
+    <!--Call to action-->
+    <div class="pt-4">
+      <a class="btn btn-outline-white" href="https://mdbootstrap.com/docs/jquery/getting-started/download/"
+        target="_blank" role="button">Download MDB
+        <i class="fas fa-download ml-2"></i>
+      </a>
+      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank"
+        role="button">Start free tutorial
+        <i class="fas fa-graduation-cap ml-2"></i>
+      </a>
+    </div>
+    <!--/.Call to action-->
 
     <hr class="my-4">
+
+    <!-- Social icons -->
+    <div class="pb-4">
+      <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+        <i class="fab fa-facebook-f mr-3"></i>
+      </a>
+
+      <a href="https://twitter.com/MDBootstrap" target="_blank">
+        <i class="fab fa-twitter mr-3"></i>
+      </a>
+
+      <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+        <i class="fab fa-youtube mr-3"></i>
+      </a>
+
+      <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
+        <i class="fab fa-google-plus-g mr-3"></i>
+      </a>
+
+      <a href="https://dribbble.com/mdbootstrap" target="_blank">
+        <i class="fab fa-dribbble mr-3"></i>
+      </a>
+
+      <a href="https://pinterest.com/mdbootstrap" target="_blank">
+        <i class="fab fa-pinterest mr-3"></i>
+      </a>
+
+      <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
+        <i class="fab fa-github mr-3"></i>
+      </a>
+
+      <a href="http://codepen.io/mdbootstrap/" target="_blank">
+        <i class="fab fa-codepen mr-3"></i>
+      </a>
+    </div>
+    <!-- Social icons -->
 
     <!--Copyright-->
     <div class="footer-copyright py-3">
@@ -217,7 +252,6 @@
   <script type="text/javascript">
     // Animations initialization
     new WOW().init();
-
   </script>
 </body>
 

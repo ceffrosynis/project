@@ -1,18 +1,73 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.db.models import Sum
 from django.views.generic import ListView, DetailView, View
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Product, Transaction, Cart, Order, Profile
-from .forms import UserProfileForm
+from .forms import UserProfileForm, InsertProductForm, Filter
+from django.core.paginator import Paginator
 
 # Create your views here.
 
-class Home(ListView):
-    model = Product
-    paginate_by = 1
-    template_name = "home.html"
+class Home(View):
+      
+    categories = ['Technology', 'Comedy', 'Adventure', 'Horror', 'Romance', 'Other', 'Mystery']
+    visible = {'Technology': True, 'Comedy': True, 'Adventure': True, 'Horror': True, 'Romance': True, 'History': True, 'Mystery': True}
+    choices = ('T', 'C', 'A', 'H', 'R', 'O', 'M',)
+
+    def get(self, request, *args, **kwargs):
+        print(self.visible)
+        model = Product.objects.filter(ProductType__in=self.choices)
+        
+        paginator = Paginator(model, 6)
+
+        page = request.GET.get('page', 1)
+        try :
+            offset = paginator.page(page)
+        except PageNotAnInteger:
+            offset = paginator.page(1)
+        except EmptyPage:
+            offset = paginator.page(paginator.num_pages)
+
+        form = Filter(request.GET, initial=self.visible)
+        context = {
+            'form': form,
+            'page_obj': offset,
+        }
+        return render(self.request, "home.html", context=context)
+
+    def post(self, request, *args, **kwargs):
+        self.choices=()
+        form = Filter(request.POST)
+        if request.method == 'POST':
+            if form.is_valid():
+                for category in self.categories:
+                    if not category in request.POST:
+                        self.visible[category] = False
+                    else:
+                        self.choices += (category[0],)
+                        self.visible[category] = True
+                form = Filter(request.POST, initial=self.visible)
+                model = Product.objects.filter(ProductType__in=self.choices)
+                paginator = Paginator(model, 6)
+
+                page = request.GET.get('page', 1)
+                try :
+                    offset = paginator.page(page)
+                except PageNotAnInteger:
+                    offset = paginator.page(1)
+                except EmptyPage:
+                    offset = paginator.page(paginator.num_pages)
+                
+                context = {
+                    'form': form,
+                    'page_obj': offset,
+                }
+                return render(self.request, "home.html", context=context)
+        
+        return redirect('items:home') 
 
 class Details(DetailView):
     model = Product
@@ -22,7 +77,14 @@ class CartSummary(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         try:
             order = Order.objects.filter(UserID=request.user)
-            context = {'object': order}
+            total = 0
+            for product in order:
+                total += product.total_price()
+
+            context = {
+                'object': order,
+                'total': total
+                }
 
             return render(self.request, "cart_summary.html", context=context)
         except ObjectDoesNotExist:
@@ -31,7 +93,12 @@ class CartSummary(LoginRequiredMixin, View):
 
 class Checkout(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        return render(self.request, "checkout.html")
+        profile = Profile.objects.filter(UserID=request.user)
+        print(profile[0].Name)
+        context = {
+            'profile': profile
+        }
+        return render(self.request, "checkout.html", context=context)
         
 
 @login_required
@@ -42,15 +109,16 @@ def add_to_cart(request, slug):
     orderList = Order.objects.filter(UserID=request.user, ProductID=product.ProductID)
 
     if cartList.exists():
-        cart = cartList[0]
-        cart.TotalQuantity += 1
-        cart.save()
-        if orderList.exists():
-            order = orderList[0]
-            order.Quantity += 1
-            order.save()
-        else:
-            Order.objects.create(UserID=request.user, ProductID=product, Quantity=1)
+            cart = cartList[0]
+            cart.TotalQuantity += 1
+            if orderList.exists():
+                order = orderList[0]
+                order.Quantity += 1
+                if orderList[0].Quantity < product.Stock:
+                    order.save()
+                    cart.save()
+            else:
+                Order.objects.create(UserID=request.user, ProductID=product, Quantity=1)
     else:
         Order.objects.create(UserID=request.user, ProductID=product, Quantity=1)
         Cart.objects.create(UserID=request.user, TotalQuantity=1)
@@ -121,9 +189,7 @@ class UserProfile(LoginRequiredMixin, View):
     
     def post(self, request, *args, **kwargs):
         form = UserProfileForm(self.request.POST or None)
-        print("In post")
         if form.is_valid():
-            print("The form is valid")
             checkProfile = Profile.objects.filter(UserID=request.user)
             if not checkProfile.exists():
                 Name = form.cleaned_data.get('Name')
@@ -140,3 +206,42 @@ class UserProfile(LoginRequiredMixin, View):
         }
 
         return render(self.request, "profile.html", context=context)
+
+
+
+class AddProduct(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        form = InsertProductForm(self.request.POST or None)
+        context = {
+            'form': form,
+            'valid': 'true'
+        }
+        return render(self.request, "add_product.html", context=context)
+
+
+    def post(self, request, *args, **kwargs):
+        form = InsertProductForm(self.request.POST or None)
+        if form.is_valid():
+            slug = form.cleaned_data.get('slug')
+            checkSlug = Product.objects.filter(slug=slug)
+            if checkSlug.exists():
+                context = {
+                    'form': form,
+                    'valid': 'false'
+                }
+                return render(self.request, "add_product.html", context=context)
+            else:
+                ProductName = form.cleaned_data.get('ProductName')
+                Price = form.cleaned_data.get('Price')
+                Discount = form.cleaned_data.get('Discount')
+                Description = form.cleaned_data.get('Description')
+                Image = form.cleaned_data.get('Image')
+                Stock = form.cleaned_data.get('Stock')
+                slug = form.cleaned_data.get('slug')
+                ProductType = form.cleaned_data.get('ProductType')
+                Product.objects.create(ProductName=ProductName, Price=Price, Discount=Discount,
+                            Description=Description, Image=Image, Stock=Stock,
+                            slug=slug, ProductType=ProductType, UserID=request.user)
+                
+ 
+                return redirect('items:home')

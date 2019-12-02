@@ -17,6 +17,15 @@
   <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
   <!-- Your custom styles (optional) -->
   <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
+
+  <style>
+    footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -41,15 +50,25 @@
 
         <!-- Left -->
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link waves-effect" href="#">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-        </ul>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'items:home' %}">Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link waves-effect" href="{% url 'items:add_product' %}">Add Product
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+          </ul>
         <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
-        {% if request.user.is_authenticated %}
+          {% if request.user.is_authenticated %}
           <li class="nav-item">
             <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
@@ -63,7 +82,7 @@
               Log out
             </a>
           </li>
-        {% else %}
+          {% else %}
           <li class="nav-item">
             <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> 0 </span>
@@ -83,7 +102,7 @@
               Login
             </a>
           </li>
-        {% endif %}
+          {% endif %}
         </ul>
 
       </div>
@@ -102,7 +121,7 @@
         <!--Grid column-->
         <div class="col-md-6 mb-4">
 
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/14.jpg" class="img-fluid" alt="">
+          <img src="{{ object.Image.url }}" class="img-fluid" alt="">
 
         </div>
         <!--Grid column-->
@@ -112,37 +131,25 @@
 
           <!--Content-->
           <div class="p-4">
-
-            <div class="mb-3">
-              <a href="">
-                <span class="badge purple mr-1">Category 2</span>
-              </a>
-              <a href="">
-                <span class="badge blue mr-1">New</span>
-              </a>
-              <a href="">
-                <span class="badge red mr-1">Bestseller</span>
-              </a>
-            </div>
-
+              <p class="lead font-weight-bold">{{ object.ProductName }}</p>
             <p class="lead">
-                {% if object.Discount %}
-                        <span class="mr-1">
-                        <del>{{object.Price}}€</del>
-                        <span>{{object.Discount}}€</span>
-                        </span>
-                {% else %}
-                        <span>{{object.Price}}€</span>
-                {% endif %}
+              {% if object.Discount %}
+              <span class="mr-1">
+                <del>{{object.Price}}€</del>
+                <span>{{object.get_final_price}}€</span>
+              </span>
+              {% else %}
+              <span>{{object.Price}}€</span>
+              {% endif %}
             </p>
+
+            <p class="lead font-weight-bold">Stock: {{ object.Stock }}</p>
 
             <p class="lead font-weight-bold">Description</p>
 
             <p>{{object.Description}}</p>
 
             <form class="d-flex justify-content-left">
-              <!-- Default input -->
-              <input type="number" value="1" aria-label="Search" class="form-control" style="width: 100px">
               <a href="{{ object.get_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
                 <i class="fas fa-shopping-cart ml-1"></i>
               </a>
@@ -160,54 +167,6 @@
 
       <hr>
 
-      <!--Grid row-->
-      <div class="row d-flex justify-content-center wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-md-6 text-center">
-
-          <h4 class="my-4 h4">Additional information</h4>
-
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus suscipit modi sapiente illo soluta odit
-            voluptates,
-            quibusdam officia. Neque quibusdam quas a quis porro? Molestias illo neque eum in laborum.</p>
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
-      <!--Grid row-->
-      <div class="row wow fadeIn">
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-
-        </div>
-        <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
     </div>
   </main>
   <!--Main layout-->
@@ -219,30 +178,16 @@
 
     <!--Copyright-->
     <div class="footer-copyright py-3">
-      © 2019 Copyright:
-      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> MDBootstrap.com </a>
+
     </div>
     <!--/.Copyright-->
 
   </footer>
   <!--/.Footer-->
 
-  <!-- SCRIPTS -->
-  <!-- JQuery -->
-  <script type="text/javascript" src="{% static 'eshop/js/jquery-3.4.1.min.js' %}"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="{% static 'eshop/js/popper.min.js' %}"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="{% static 'eshop/js/bootstrap.min.js' %}"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="{% static 'eshop/js/mdb.min.js' %}"></script>
-  <!-- Initializations -->
-  <script type="text/javascript">
-    // Animations initialization
-    new WOW().init();
+
 
   </script>
 </body>
 
 </html>
-
