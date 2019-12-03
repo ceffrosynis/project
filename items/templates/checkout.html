@@ -1,6 +1,8 @@
 {% load static %}
 {% load quantity %}
 {% load crispy_forms_tags %}
+{% load static %}
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -201,6 +203,29 @@
                     </tbody>
                 </table>
 
+                <h3 class="headingTop text-center">Select Your Payment Method</h3>
+
+                <!-- Default unchecked -->
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked1" name="defaultExampleRadios">
+                    <label class="custom-control-label" for="defaultUnchecked1">Debit Card</label>
+                    <img src="{% static "project/Debit.png" %}" alt="My image">
+                </div>
+
+                <!-- Default unchecked -->
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios">
+                    <label class="custom-control-label" for="defaultUnchecked2">Paypal</label>
+                    <img src="{% static "project/paypal.png" %}" alt="My image">
+                </div>
+
+                <!-- Default unchecked -->
+                <div class="custom-control custom-radio">
+                    <input type="radio" class="custom-control-input" id="defaultUnchecked3" name="defaultExampleRadios">
+                    <label class="custom-control-label" for="defaultUnchecked3">Cash on delivery</label>
+                    <img src="{% static "project/COD.png" %}" alt="My image">
+                </div>
+
                 {% if request.user|products_in_cart != 0 %}
                 <tr>
                     <td colspan="5"><a href="{% url 'items:checkout' %}" class="btn btn-success float-right">Confirm Order</a></td>
@@ -208,27 +233,10 @@
                 {% endif %}
 
             </div>
-            
-
-            <!-- Default inline 1-->
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample">
-                <label class="custom-control-label" for="defaultInline1">1</label>
-            </div>
-
-            <!-- Default inline 2-->
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample">
-                <label class="custom-control-label" for="defaultInline2">2</label>
-            </div>
-
-            <!-- Default inline 3-->
-            <div class="custom-control custom-radio custom-control-inline">
-                <input type="radio" class="custom-control-input" id="defaultInline3" name="inlineDefaultRadiosExample">
-                <label class="custom-control-label" for="defaultInline3">3</label>
-            </div>
 
         </div>
+
+
         <!--Grid column-->
     </div>
     <!--Grid row-->
