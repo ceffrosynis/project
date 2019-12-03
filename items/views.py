@@ -213,7 +213,7 @@ class UserProfile(LoginRequiredMixin, View):
 
 class AddProduct(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        form = InsertProductForm(self.request.POST or None)
+        form = InsertProductForm(self.request.POST, self.request.FILES)
         context = {
             'form': form,
             'valid': 'true'
@@ -222,7 +222,7 @@ class AddProduct(LoginRequiredMixin, View):
 
 
     def post(self, request, *args, **kwargs):
-        form = InsertProductForm(self.request.POST or None)
+        form = InsertProductForm(self.request.POST, self.request.FILES)
         if form.is_valid():
             slug = form.cleaned_data.get('slug')
             checkSlug = Product.objects.filter(slug=slug)
