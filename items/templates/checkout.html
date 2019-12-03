@@ -116,7 +116,7 @@
     <div class="container wow fadeIn">
 
       <!-- Heading -->
-      <h2 class="my-5 h2 text-center">Profile Info</h2>
+      <h2 class="my-5 h2 text-center">Checkout</h2>
 
       <!--Grid row-->
       <div class="row justify-content-md-center">
@@ -160,11 +160,30 @@
           </div>
           <!--/.Card-->
           <form style="margin-top: 10px;">
-            <div class="form-group"">
-                <label for=" exampleFormControlTextarea1">Comments</label>
+            <div class="form-group">
+              <label for=" exampleFormControlTextarea1">Comments</label>
               <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
+
+            <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
+              <label class="custom-control-label" for="defaultUnchecked">Cash on Delivery</label>
+            </div>
+
+            <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
+              <label class="custom-control-label" for="defaultUnchecked">Credit Card</label>
+            </div>
+
+            <div class="custom-control custom-radio">
+              <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
+              <label class="custom-control-label" for="defaultUnchecked">Paypal</label>
+            </div>
+
           </form>
+
+          <a href="{% url 'items:completion' %}" class="btn btn-success float-right">Submit</a>
+
         </div>
         <!--Grid column-->
 

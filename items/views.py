@@ -114,11 +114,12 @@ def add_to_cart(request, slug):
             if orderList.exists():
                 order = orderList[0]
                 order.Quantity += 1
-                if orderList[0].Quantity < product.Stock:
+                if orderList[0].Quantity <= product.Stock:
                     order.save()
                     cart.save()
             else:
                 Order.objects.create(UserID=request.user, ProductID=product, Quantity=1)
+                cart.save()
     else:
         Order.objects.create(UserID=request.user, ProductID=product, Quantity=1)
         Cart.objects.create(UserID=request.user, TotalQuantity=1)
@@ -160,8 +161,8 @@ def remove_row(request, slug):
             order = orderList[0]
             cart = cartList[0]
             cart.TotalQuantity -= order.Quantity
-            order.delete()
             cart.save()
+            order.delete()
 
     return redirect("items:cart_summary")
 
@@ -246,3 +247,26 @@ class AddProduct(LoginRequiredMixin, View):
                 
  
                 return redirect('items:home')
+
+
+@login_required
+def completion(request):
+    orderList = Order.objects.filter(UserID=request.user)
+    cartList = Cart.objects.filter(UserID=request.user)
+    if cartList.exists():
+        if orderList.exists():
+            for order in orderList:
+                cart = cartList[0]
+                cart.TotalQuantity -= order.Quantity
+                cart.save()
+                order.delete()
+                if order.ProductID.Stock - order.Quantity == 0:
+                    product = get_object_or_404(Product, ProductID=order.ProductID.ProductID)
+                    product.delete()
+                else:
+                    product = get_object_or_404(Product, ProductID=order.ProductID.ProductID)
+                    product.Stock -= order.Quantity
+                    product.save()
+
+
+    return redirect('items:home')
