@@ -6,296 +6,299 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Material Design Bootstrap</title>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-  <!-- Bootstrap core CSS -->
-  <link href="{% static 'eshop/css/bootstrap.min.css' %}" rel="stylesheet">
-  <!-- Material Design Bootstrap -->
-  <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
-  <!-- Your custom styles (optional) -->
-  <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Material Design Bootstrap</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'eshop/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
 
-  <style>
-    input {
-      width: 100%;
-    }
-  </style>
+    <style>
+        input {
+            width: 100%;
+        }
+    </style>
 
 </head>
 
 <body class="grey lighten-3">
 
-  <!-- Navbar -->
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+<!-- Navbar -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
     <div class="container">
 
-      <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
-        <strong class="blue-text">MDB</strong>
-      </a>
+        <!-- Brand -->
+        <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
+            <strong class="blue-text">MDB</strong>
+        </a>
 
-      <!-- Collapse -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+        <!-- Collapse -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <!-- Links -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Links -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        <!-- Left -->
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'items:home' %}">Home
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'items:add_product' %}">Add Product
-              <span class="sr-only">(current)</span>
-            </a>
-          </li>
-        </ul>
+            <!-- Left -->
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'items:home' %}">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-effect" href="{% url 'items:add_product' %}">Add Product
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+            </ul>
 
-        <!-- Right -->
-        <ul class="navbar-nav nav-flex-icons">
-          {% if request.user.is_authenticated %}
-          <li class="nav-item">
-            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
-              <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'account_logout' %}" class="nav-link border border-light rounded waves-effect"
-              target="_blank">
-              Log out
-            </a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
-              <span class="badge red z-depth-1 mr-1"> 0 </span>
-              <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'account_signup' %}" class="nav-link border border-light rounded waves-effect"
-              target="_blank">
-              Signup
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{% url 'account_login' %}" class="nav-link border border-light rounded waves-effect"
-              target="_blank">
-              Log in
-            </a>
-          </li>
-          {% endif %}
-        </ul>
+            <!-- Right -->
+            <ul class="navbar-nav nav-flex-icons">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+                        <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'account_logout' %}" class="nav-link border border-light rounded waves-effect"
+                       target="_blank">
+                        Log out
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+                        <span class="badge red z-depth-1 mr-1"> 0 </span>
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'account_signup' %}" class="nav-link border border-light rounded waves-effect"
+                       target="_blank">
+                        Signup
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'account_login' %}" class="nav-link border border-light rounded waves-effect"
+                       target="_blank">
+                        Log in
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
 
-      </div>
+        </div>
 
     </div>
-  </nav>
-  <!-- Navbar -->
+</nav>
+<!-- Navbar -->
 
-  <!--Main layout-->
-  <main class="mt-5 pt-4">
+<!--Main layout-->
+<main class="mt-5 pt-4">
     <div class="container wow fadeIn">
 
-      <!-- Heading -->
-      <h2 class="my-5 h2 text-center">Profile Info</h2>
+        <!-- Heading -->
+        <h2 class="my-5 h2 text-center">Profile Info</h2>
 
-      <!--Grid row-->
-      <div class="row justify-content-md-center">
+        <!--Grid row-->
+        <div class="row justify-content-md-center">
 
-        <!--Grid column-->
-        <div class="col-md-8 mb-4">
+            <!--Grid column-->
+            <div class="col-md-8 mb-4">
 
-          <!--Card-->
-          <div class="card container">
-            <div class="row">
-              <table class="table table-dark" style="height:100%">
-                {% for prof in profile %}
-                <tbody>
-                  <tr>
-                    <th scope="row">First Name</th>
-                    <td>{{ prof.Name }}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Last Name</th>
-                    <td>{{ prof.LastName }}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Card ID</th>
-                    <td>{{ prof.CardID }}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Address</th>
-                    <td>{{ prof.Address }}</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">Country</th>
-                    <td>{{ prof.Country }}</td>
-                  </tr>
-                </tbody>
-                {% endfor %}
-              </table>
+                <!--Card-->
+                <div class="card container">
+                    <div class="row">
+                        <table class="table table-dark" style="height:100%">
+                            {% for prof in profile %}
+                            <tbody>
+                            <tr>
+                                <th scope="row">First Name</th>
+                                <td>{{ prof.Name }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Last Name</th>
+                                <td>{{ prof.LastName }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Card ID</th>
+                                <td>{{ prof.CardID }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Address</th>
+                                <td>{{ prof.Address }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Country</th>
+                                <td>{{ prof.Country }}</td>
+                            </tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                    </div>
+                    <div class="row">
+
+                    </div>
+                </div>
+                <!--/.Card-->
+                <form style="margin-top: 10px;">
+                    <div class="form-group"">
+                    <label for=" exampleFormControlTextarea1">Comments</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
-            <div class="row">
+            </form>
+
+
+            <div class="container">
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col">Product</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Total Price</th>
+                        <th scope="col">Sum</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for item in object %}
+                    <tr>
+                        <th scope="row">{{item.ProductID}}</th>
+                        <td>{{item.get_price}}</td>
+                        <td>
+                            {{item.Quantity}} <a href="{% url 'items:cart' item.ProductID.slug %}"></a> </td>
+                        <td>{{item.total_price}}</td>
+                        <td></td>
+                    </tr>
+
+
+                    </tr>
+
+                    {% endfor %}
+                    <tr>
+                        <td colspan="4">Total Price</td>
+                        <td>{{total}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                {% if request.user|products_in_cart != 0 %}
+                <tr>
+                    <td colspan="5"><a href="{% url 'items:checkout' %}" class="btn btn-success float-right">Confirm Order</a></td>
+                </tr>
+                {% endif %}
 
             </div>
-          </div>
-          <!--/.Card-->
-          <form style="margin-top: 10px;">
-            <div class="form-group"">
-                <label for=" exampleFormControlTextarea1">Comments</label>
-              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            
+
+            <!-- Default inline 1-->
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="defaultInline1" name="inlineDefaultRadiosExample">
+                <label class="custom-control-label" for="defaultInline1">1</label>
             </div>
-          </form>
+
+            <!-- Default inline 2-->
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="defaultInline2" name="inlineDefaultRadiosExample">
+                <label class="custom-control-label" for="defaultInline2">2</label>
+            </div>
+
+            <!-- Default inline 3-->
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" class="custom-control-input" id="defaultInline3" name="inlineDefaultRadiosExample">
+                <label class="custom-control-label" for="defaultInline3">3</label>
+            </div>
+
         </div>
         <!--Grid column-->
-
-      </div>
-      <!--Grid row-->
-
     </div>
-    
-    <div class="container">
-
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Product</th>
-            <th scope="col">Price</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Total Price</th>
-            <th scope="col">Sum</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for item in object %}
-          <tr>
-            <th scope="row">{{item.ProductID}}</th>
-            <td>{{item.get_price}}</td>
-            <td>
-              {{item.Quantity}} <a href="{% url 'items:cart' item.ProductID.slug %}"></a> </td>
-            <td>{{item.total_price}}</td>
-            <td></td>
-          </tr>
-
-
-          </tr>
-
-          {% endfor %}
-          <tr>
-            <td colspan="4">Total Price</td>
-            <td>{{total}}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      {% if request.user|products_in_cart != 0 %}
-      <tr>
-        <td colspan="5"><a href="{% url 'items:checkout' %}" class="btn btn-success float-right">Confirm Order</a></td>
-      </tr>
-      {% endif %}
-
+    <!--Grid row-->
     </div>
-    
-  </main>
-  <!--Main layout-->
-
-  <!--Footer-->
-  <footer class="page-footer text-center font-small mt-4 wow fadeIn">
-
+</main>
+<!--Main layout-->
+<!--Footer-->
+<footer class="page-footer text-center font-small mt-4 wow fadeIn">
     <!--Call to action-->
     <div class="pt-4">
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/docs/jquery/getting-started/download/"
-        target="_blank" role="button">Download MDB
-        <i class="fas fa-download ml-2"></i>
-      </a>
-      <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank"
-        role="button">Start free tutorial
-        <i class="fas fa-graduation-cap ml-2"></i>
-      </a>
+        <a class="btn btn-outline-white" href="https://mdbootstrap.com/docs/jquery/getting-started/download/"
+           target="_blank" role="button">Download MDB
+            <i class="fas fa-download ml-2"></i>
+        </a>
+        <a class="btn btn-outline-white" href="https://mdbootstrap.com/education/bootstrap/" target="_blank"
+           role="button">Start free tutorial
+            <i class="fas fa-graduation-cap ml-2"></i>
+        </a>
     </div>
     <!--/.Call to action-->
-
     <hr class="my-4">
-
     <!-- Social icons -->
     <div class="pb-4">
-      <a href="https://www.facebook.com/mdbootstrap" target="_blank">
-        <i class="fab fa-facebook-f mr-3"></i>
-      </a>
-
-      <a href="https://twitter.com/MDBootstrap" target="_blank">
-        <i class="fab fa-twitter mr-3"></i>
-      </a>
-
-      <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
-        <i class="fab fa-youtube mr-3"></i>
-      </a>
-
-      <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
-        <i class="fab fa-google-plus-g mr-3"></i>
-      </a>
-
-      <a href="https://dribbble.com/mdbootstrap" target="_blank">
-        <i class="fab fa-dribbble mr-3"></i>
-      </a>
-
-      <a href="https://pinterest.com/mdbootstrap" target="_blank">
-        <i class="fab fa-pinterest mr-3"></i>
-      </a>
-
-      <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
-        <i class="fab fa-github mr-3"></i>
-      </a>
-
-      <a href="http://codepen.io/mdbootstrap/" target="_blank">
-        <i class="fab fa-codepen mr-3"></i>
-      </a>
+        <a href="https://www.facebook.com/mdbootstrap" target="_blank">
+            <i class="fab fa-facebook-f mr-3"></i>
+        </a>
+        <a href="https://twitter.com/MDBootstrap" target="_blank">
+            <i class="fab fa-twitter mr-3"></i>
+        </a>
+        <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
+            <i class="fab fa-youtube mr-3"></i>
+        </a>
+        <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
+            <i class="fab fa-google-plus-g mr-3"></i>
+        </a>
+        <a href="https://dribbble.com/mdbootstrap" target="_blank">
+            <i class="fab fa-dribbble mr-3"></i>
+        </a>
+        <a href="https://pinterest.com/mdbootstrap" target="_blank">
+            <i class="fab fa-pinterest mr-3"></i>
+        </a>
+        <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
+            <i class="fab fa-github mr-3"></i>
+        </a>
+        <a href="http://codepen.io/mdbootstrap/" target="_blank">
+            <i class="fab fa-codepen mr-3"></i>
+        </a>
     </div>
     <!-- Social icons -->
-
     <!--Copyright-->
     <div class="footer-copyright py-3">
-      © 2019 Copyright:
-      <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> MDBootstrap.com </a>
+        © 2019 Copyright:
+        <a href="https://mdbootstrap.com/education/bootstrap/" target="_blank"> MDBootstrap.com </a>
     </div>
     <!--/.Copyright-->
-
-  </footer>
-  <!--/.Footer-->
-
-  <!-- SCRIPTS -->
-  <!-- JQuery -->
-  <script type="text/javascript" src="{% static 'eshop/js/jquery-3.4.1.min.js' %}"></script>
-  <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="{% static 'eshop/js/popper.min.js' %}"></script>
-  <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="{% static 'eshop/js/bootstrap.min.js' %}"></script>
-  <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="{% static 'eshop/js/mdb.min.js' %}"></script>
-  <!-- Initializations -->
-  <script type="text/javascript">
+</footer>
+<!--/.Footer-->
+<!-- SCRIPTS -->
+<!-- JQuery -->
+<script type="text/javascript" src="{% static 'eshop/js/jquery-3.4.1.min.js' %}"></script>
+<!-- Bootstrap tooltips -->
+<script type="text/javascript" src="{% static 'eshop/js/popper.min.js' %}"></script>
+<!-- Bootstrap core JavaScript -->
+<script type="text/javascript" src="{% static 'eshop/js/bootstrap.min.js' %}"></script>
+<!-- MDB core JavaScript -->
+<script type="text/javascript" src="{% static 'eshop/js/mdb.min.js' %}"></script>
+<!-- Initializations -->
+<script type="text/javascript">
     // Animations initialization
     new WOW().init();
-  </script>
+</script>
 </body>
-
 </html>
