@@ -112,7 +112,7 @@
   <!-- Navbar -->
 
   <!--Main layout-->
-  <main class="mt-5 pt-4">
+  <main class="mt-5 pt-4" style='margin-bottom: 100px;'>
     <div class="container wow fadeIn">
 
       <!-- Heading -->
@@ -166,18 +166,21 @@
             </div>
 
             <div class="custom-control custom-radio">
-              <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
-              <label class="custom-control-label" for="defaultUnchecked">Cash on Delivery</label>
+              <input type="radio" class="custom-control-input" id="defaultUnchecked1" name="defaultExampleRadios">
+              <label class="custom-control-label" for="defaultUnchecked1">Debit Card</label>
+              <img src="{% static "project/Debit.png" %}" alt="My image">
             </div>
-
+            <!-- Default unchecked -->
             <div class="custom-control custom-radio">
-              <input type="radio" class="custom-control-input" id="defaultUnchecked" name="defaultExampleRadios">
-              <label class="custom-control-label" for="defaultUnchecked">Credit Card</label>
+              <input type="radio" class="custom-control-input" id="defaultUnchecked2" name="defaultExampleRadios">
+              <label class="custom-control-label" for="defaultUnchecked2">Paypal</label>
+              <img src="{% static "project/paypal.png" %}" alt="My image">
             </div>
-
+            <!-- Default unchecked -->
             <div class="custom-control custom-radio">
-              <input type="radio" class="custom-control-input" id="defaultChecked" name="defaultExampleRadios" checked>
-              <label class="custom-control-label" for="defaultChecked">Paypal</label>
+              <input type="radio" class="custom-control-input" id="defaultChecked1" name="defaultExampleRadios" checked>
+              <label class="custom-control-label" for="defaulChecked1">Cash on delivery</label>
+              <img src="{% static "project/COD.png" %}" alt="My image">
             </div>
 
           </form>
@@ -199,11 +202,11 @@
 
     <hr class="my-4">
 
-    
+
 
     <!--Copyright-->
     <div class="footer-copyright py-3">
-      
+
     </div>
     <!--/.Copyright-->
 
