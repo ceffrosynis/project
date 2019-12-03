@@ -114,7 +114,7 @@ def add_to_cart(request, slug):
             if orderList.exists():
                 order = orderList[0]
                 order.Quantity += 1
-                if orderList[0].Quantity <= product.Stock:
+                if order.Quantity <= product.Stock:
                     order.save()
                     cart.save()
             else:
