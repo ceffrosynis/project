@@ -158,6 +158,39 @@
 
             </div>
           </div>
+
+          <table class="table table-bordered">
+            <thead>
+            <tr>
+              <th scope="col">Product</th>
+              <th scope="col">Price</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Total Price</th>
+              <th scope="col">Sum</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for item in object %}
+            <tr>
+              <th scope="row">{{item.ProductID}}</th>
+              <td>{{item.get_price}}</td>
+              <td>
+                {{item.Quantity}} <a href="{% url 'items:cart' item.ProductID.slug %}"></a> </td>
+              <td>{{item.total_price}}</td>
+              <td></td>
+            </tr>
+
+
+            </tr>
+
+            {% endfor %}
+            <tr>
+              <td colspan="4">Total Price</td>
+              <td>{{total}}</td>
+            </tr>
+            </tbody>
+          </table>
+
           <!--/.Card-->
           <form style="margin-top: 10px;">
             <div class="form-group">
