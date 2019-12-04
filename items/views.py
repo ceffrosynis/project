@@ -93,12 +93,24 @@ class CartSummary(LoginRequiredMixin, View):
 
 class Checkout(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        profile = Profile.objects.filter(UserID=request.user)
-        print(profile[0].Name)
-        context = {
-            'profile': profile
-        }
-        return render(self.request, "checkout.html", context=context)
+        try:
+            profile = Profile.objects.filter(UserID=request.user)
+            print(profile[0].Name)
+            order = Order.objects.filter(UserID=request.user)
+            total = 0
+            for product in order:
+                total += product.total_price()
+
+            context = {
+                'object': order,
+                'total': total,
+                'profile': profile
+            }
+
+            return render(self.request, "checkout.html", context=context)
+        except ObjectDoesNotExist:
+            messages.error(self.request, "You do not have any order")
+            return redirect("/")
         
 
 @login_required
