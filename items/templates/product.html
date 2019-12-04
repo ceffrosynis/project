@@ -135,6 +135,12 @@
               {% else %}
               <span>{{object.Price}}€</span>
               {% endif %}
+            <form class="d-flex justify-content-left">
+              <a href="{{ object.get_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+
+            </form>
             </p>
 
             <p class="lead font-weight-bold">Stock: {{ object.Stock }}</p>
@@ -143,12 +149,7 @@
 
             <p>{{object.Description}}</p>
 
-            <form class="d-flex justify-content-left">
-              <a href="{{ object.get_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
-                <i class="fas fa-shopping-cart ml-1"></i>
-              </a>
 
-            </form>
 
           </div>
           <!--Content-->

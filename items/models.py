@@ -39,7 +39,7 @@ class Product(models.Model):
         if self.Discount == 0:
             return self.Price
         else:
-            return self.Price - self.Discount
+            return round(self.Price - self.Discount, 2)
 
     def __str__(self):
         return self.ProductName
@@ -62,13 +62,13 @@ class Order(models.Model):
         if self.ProductID.Discount == 0:
             return self.ProductID.Price
         else:
-            return self.ProductID.Price - self.ProductID.Discount
+            return round(self.ProductID.Price - self.ProductID.Discount, 2)
 
     def total_price(self):
         if self.ProductID.Discount is None:
             return self.ProductID.Price * self.Quantity
         else:
-            return (self.ProductID.Price - self.ProductID.Discount) * self.Quantity
+            return round((self.ProductID.Price - self.ProductID.Discount), 2) * self.Quantity
 
     def __str__(self):
         return str(self.ProductID)
