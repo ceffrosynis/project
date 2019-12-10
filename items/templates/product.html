@@ -1,0 +1,187 @@
+{% load static %}
+{% load quantity %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>e-Book</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'eshop/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
+
+
+
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand waves-effect" href="{% url 'items:home' %}" target="_blank">
+        <strong class="blue-text">e-Book</strong>
+      </a>
+
+      <!-- Collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'items:home' %}">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'items:add_product' %}">Add Product
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+              <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
+              <i class="fas fa-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'account_logout' %}" class="nav-link border border-light rounded waves-effect"
+              target="_blank">
+              Log out
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+              <span class="badge red z-depth-1 mr-1"> 0 </span>
+              <i class="fas fa-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'account_signup' %}" class="nav-link border border-light rounded waves-effect"
+              target="_blank">
+              Signup
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'account_login' %}" class="nav-link border border-light rounded waves-effect"
+              target="_blank">
+              Login
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  <!-- Navbar -->
+
+  <!--Main layout-->
+  <main class="mt-5 pt-4" style="margin-bottom: 100px;">
+    <div class="container dark-grey-text mt-5">
+
+      <!--Grid row-->
+      <div class="row wow fadeIn">
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <img src="{{ object.Image.url }}" class="img-fluid" alt="">
+
+        </div>
+        <!--Grid column-->
+
+        <!--Grid column-->
+        <div class="col-md-6 mb-4">
+
+          <!--Content-->
+          <div class="p-4">
+            <p class="lead font-weight-bold">{{ object.ProductName }}</p>
+            <p class="lead">
+              {% if object.Discount %}
+              <span class="mr-1">
+                <del>{{object.Price}}€</del>
+                <span>{{object.get_final_price}}€</span>
+              </span>
+              {% else %}
+              <span>{{object.Price}}€</span>
+              {% endif %}
+            </p>
+
+            <form class="d-flex justify-content-left">
+              <a href="{{ object.get_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+
+            </form>
+
+            <p class="lead font-weight-bold" style="margin-top: 20px;">Stock: {{ object.Stock }}</p>
+
+            <p class="lead font-weight-bold">Description</p>
+
+            <p>{{object.Description}}</p>
+
+          </div>
+          <!--Content-->
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+      <!--Grid row-->
+
+      <hr>
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+  <!--Footer-->
+  <footer class="page-footer fixed-bottom text-center font-small mt-4 wow fadeIn">
+
+    <hr class="my-4">
+
+    <!--Copyright-->
+    <div class="footer-copyright py-3">
+
+    </div>
+    <!--/.Copyright-->
+
+  </footer>
+  <!--/.Footer-->
+
+
+
+  </script>
+</body>
+
+</html>

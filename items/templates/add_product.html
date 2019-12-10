@@ -1,0 +1,215 @@
+{% load static %}
+{% load quantity %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>e-Book</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'eshop/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
+    <!-- Your custom styles (optional) -->
+    <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
+
+    <style>
+        input {
+            width: 100%;
+        }
+
+
+        .navbar {
+            background-color: rgb(200, 200, 200);
+        }
+    </style>
+
+</head>
+
+<body class="grey lighten-3">
+
+    <!-- Navbar -->
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light scrolling-navbar">
+        <div class="container">
+
+            <!-- Brand -->
+            <a class="navbar-brand waves-effect" href="{% url 'items:home' %}" target="_blank">
+                <strong class="blue-text">e-Book</strong>
+            </a>
+
+            <!-- Collapse -->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Links -->
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <!-- Left -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="{% url 'items:home' %}">Home
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link waves-effect" href="{% url 'items:add_product' %}">Add Product
+                            <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Right -->
+                <ul class="navbar-nav nav-flex-icons">
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+                            <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'account_logout' %}" class="nav-link border border-light rounded waves-effect"
+                            target="_blank">
+                            Log out
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+                            <span class="badge red z-depth-1 mr-1"> 0 </span>
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'account_signup' %}" class="nav-link border border-light rounded waves-effect"
+                            target="_blank">
+                            Signup
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{% url 'account_login' %}" class="nav-link border border-light rounded waves-effect"
+                            target="_blank">
+                            Log in
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+
+            </div>
+
+        </div>
+    </nav>
+    <!-- Navbar -->
+
+    <!--Main layout-->
+    <main class="mt-5 pt-4">
+        <div class="container wow fadeIn" style="margin-bottom: 100px;">
+
+            <!-- Heading -->
+            <h2 class="my-5 h2 text-center">Add Product</h2>
+
+            <!--Grid row-->
+            <div class="row justify-content-md-center">
+
+                <!--Grid column-->
+                <div class="col-md-8 mb-4">
+
+                    <!--Card-->
+                    <div class="card">
+
+                        <form method="post" style="margin: 20px;" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="md-form ">
+                                {{ form.ProductName }}
+                                <label for="ProductName" class="">Product Name</label>
+                            </div>
+
+                            <div class="md-form">
+                                {{ form.Price }}
+                                <label for="Price" class="">Price</label>
+                            </div>
+
+                            <div class="md-form">
+                                {{ form.Discount }}
+                                <label for="Discount" class="">Discount</label>
+                            </div>
+
+                            <div class="md-form">
+                                {{ form.Description }}
+                                <label for="Description" class="">Description</label>
+                            </div>
+
+                            <div class="">
+                                <label for="Image" class="">Cover Image :</label>
+                                {{ form.Image }}
+                            </div>
+
+                            <div class="md-form">
+                                {{ form.Stock }}
+                                <label for="Stock" class="">Stock</label>
+                            </div>
+
+                            <div class="md-form ">
+                                {{ form.slug }}
+                                <label for="slug" class="">ProductID</label>
+                                {% if valid == 'false' %}
+                                <p style='color: orangered;'>This ProductID is already in use</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-lg-4 col-md-12 mb-4">
+                                {{ form.ProductType }}
+                            </div>
+
+
+
+                            <button class="btn btn-primary float-right" type='submit'> Save </button>
+                        </form>
+
+
+
+                    </div>
+                    <!--/.Card-->
+
+                </div>
+                <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+        </div>
+    </main>
+    <!--Main layout-->
+
+    <!-- SCRIPTS -->
+    <!-- JQuery -->
+    <script type="text/javascript" src="{% static 'eshop/js/jquery-3.4.1.min.js' %}"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="{% static 'eshop/js/popper.min.js' %}"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="{% static 'eshop/js/bootstrap.min.js' %}"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="{% static 'eshop/js/mdb.min.js' %}"></script>
+    <!-- Initializations -->
+    <script type="text/javascript">
+        // Animations initialization
+        new WOW().init();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,324 @@
+{% load static %}
+{% load quantity %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>e-Book</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'eshop/css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'eshop/css/mdb.min.css' %}" rel="stylesheet">
+  <!-- Your custom styles (optional) -->
+  <link href="{% static 'eshop/css/style.min.css' %}" rel="stylesheet">
+  <style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    .navbar{
+      background-color: rgb(200,200,200);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar fixed-top navbar-expand-lg navbar-light scrolling-navbar">
+    <div class="container">
+
+      <!-- Brand -->
+      <a class="navbar-brand waves-effect" href="{% url 'items:home' %}" target="_blank">
+        <strong class="blue-text">e-Book</strong>
+      </a>
+
+      <!-- Collapse -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <!-- Left -->
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link waves-effect" href="{% url 'items:home' %}">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'items:profile' %}">Edit Profile
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link waves-effect" href="{% url 'items:add_product' %}">Add Product
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+        </ul>
+
+        <!-- Right -->
+        <ul class="navbar-nav nav-flex-icons">
+          {% if request.user.is_authenticated %}
+          <li class="nav-item">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+              <span class="badge red z-depth-1 mr-1"> {{request.user|products_in_cart}} </span>
+              <i class="fas fa-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'account_logout' %}" class="nav-link border border-light rounded waves-effect"
+              target="_blank">
+              Log out
+            </a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a href="{% url 'items:cart_summary' %}" class="nav-link waves-effect">
+              <span class="badge red z-depth-1 mr-1"> 0 </span>
+              <i class="fas fa-shopping-cart"></i>
+              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'account_signup' %}" class="nav-link border border-light rounded waves-effect"
+              target="_blank">
+              Signup
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{% url 'account_login' %}" class="nav-link border border-light rounded waves-effect"
+              target="_blank">
+              Log in
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+
+      </div>
+
+    </div>
+  </nav>
+  <!-- Navbar -->
+
+  <!--Main layout-->
+  <main>
+    <div class="container" style="margin-top: 100px;">
+
+      <!--/.Navbar-->
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <div class="my-4">
+
+              <p class="font-weight-bold">Filter</p>
+              <form method='post'>
+                  {% csrf_token %}
+                <ul class="list-group list-group-flush">
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Technology }}
+                      <label class="custom-control-label" for="check1">Technology</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Comedy }}
+                      <label class="custom-control-label" for="check2">Comedy</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Adventure }}
+                      <label class="custom-control-label" for="check3">Adventure</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Horror }}
+                      <label class="custom-control-label" for="check4">Horror</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Romance }}
+                      <label class="custom-control-label" for="check5">Romance</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Other }}
+                      <label class="custom-control-label" for="check6">Other</label>
+                    </div>
+                  </li>
+                  <li class="list-group-item">
+                    <!-- Default checked -->
+                    <div class="custom-control custom-checkbox">
+                      {{ form.Mystery }}
+                      <label class="custom-control-label" for="check7">Mystery</label>
+                    </div>
+                  </li>
+                </ul>
+              </form>
+            </div>
+
+          </div>
+          <div class="col-10">
+            <!--Section: Products v.3-->
+            <section class="text-center mb-4">
+
+              <!--Grid row-->
+              <div class="row wow fadeIn">
+
+                <!--Grid column-->
+
+                {% for item in page_obj %}
+
+                <div class="col-lg-3 col-md-6 mb-4">
+
+                  <!--Card-->
+                  <div class="card">
+
+                    <!--Card image-->
+                    <div class="view overlay">
+                      <img src="{{item.Image.url}}" class="card-img-top" alt="">
+                      <a href="{{ item.get_absolute_url }}">
+                        <div class="mask rgba-white-slight"></div>
+                      </a>
+                    </div>
+                    <!--Card image-->
+
+                    <!--Card content-->
+                    <div class="card-body text-center">
+                      <!--Category & Title-->
+                      <a href="" class="grey-text">
+                        <h5>{{ item.get_ProductType_display }}</h5>
+                      </a>
+                      <h5>
+                        <strong>
+                          <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{item.ProductName}}
+                          </a>
+                        </strong>
+                      </h5>
+
+                      <h4 class="font-weight-bold blue-text">
+                        <strong>
+                          {{item.get_final_price}}€
+                        </strong>
+                      </h4>
+
+                    </div>
+                    <!--Card content-->
+
+                  </div>
+                  <!--Card-->
+
+                </div>
+                {% endfor %}
+                <!--Grid column-->
+              </div>
+              <!--Grid row-->
+
+            </section>
+            <!--Section: Products v.3-->
+          </div>
+        </div>
+      </div>
+
+      <!--Pagination-->
+      {% if page_obj.has_other_pages %}
+      <nav class="d-flex justify-content-center wow fadeIn">
+        <ul class="pagination pg-blue">
+
+          <!--Arrow left-->
+          {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+
+          {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+      <!--Pagination-->
+
+    </div>
+  </main>
+  <!--Main layout-->
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'eshop/js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'eshop/js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'eshop/js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'eshop/js/mdb.min.js' %}"></script>
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+
+  </script>
+</body>
+
+</html>
